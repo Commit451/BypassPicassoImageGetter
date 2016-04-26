@@ -1,21 +1,17 @@
-# Gimbal
-Assists with orientation locking and sensor event normalization
+# BypassPicassoImageGetter
+Loads images for Bypass using Picasso
 
-There are many apps that lock orientation. There are good and bad reasons for this. But many times, locking a single activity within your app would suffice. Gimbal serves that purpose. When tied to an activity, it gives you control over locking and unlocking the current orientation of the user. This way, if the user prefers to use your app in landscape, they will not have to be forced into portrait in a single activty, but instead are locked into their current orientation. 
-
-[![Build Status](https://travis-ci.org/Commit451/Gimbal.svg?branch=master)](https://travis-ci.org/Commit451/Gimbal)
-[![](https://jitpack.io/v/Commit451/Gimbal.svg)](https://jitpack.io/#Commit451/Gimbal)
+[![Build Status](https://travis-ci.org/Commit451/BypassPicassoImageGetter.svg?branch=master)](https://travis-ci.org/Commit451/BypassPicassoImageGetter)
+[![](https://jitpack.io/v/Commit451/BypassPicassoImageGetter.svg)](https://jitpack.io/#Commit451/BypassPicassoImageGetter)
 
 # Usage
-If you are using this library to lock orientation on certain activities, usage is simple:
 ```java
-//this == activity
-Gimbal gimbal = new Gimbal(this);
-gimbal.lock();
-//later, if need be
-gimbal.unlock();
+textView.setText(bypass.markdownToSpannable(text,
+    new BypassPicassoImageGetter(textView, Picasso.with(MainActivity.this))));
 ```
-See the sample project for a comprehensive example. 
+See the sample project for a comprehensive example.
+
+Original credits: http://stackoverflow.com/a/25530488/504611
 
 License
 --------
