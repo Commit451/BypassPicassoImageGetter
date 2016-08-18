@@ -3,6 +3,7 @@ package com.commit451.bypasspicassoimagegetter.sample;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,8 +46,15 @@ public class MainActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     Bypass bypass = new Bypass(MainActivity.this);
                     try {
-                        textView.setText(bypass.markdownToSpannable(response.body().string(),
-                                new BypassPicassoImageGetter(textView, Picasso.with(MainActivity.this))));
+                        BypassPicassoImageGetter imageGetter = new BypassPicassoImageGetter(textView, Picasso.with(MainActivity.this));
+                        imageGetter.setSourceModifier(new BypassPicassoImageGetter.SourceModifier() {
+                            @Override
+                            public String modify(String source) {
+                                Log.d("IMAGE", "loading image " + source);
+                                return source;
+                            }
+                        });
+                        textView.setText(bypass.markdownToSpannable(response.body().string(), imageGetter));
                     } catch (Exception e) {
                         Toast.makeText(MainActivity.this, "Failed to load Markdown", Toast.LENGTH_SHORT).show();
                     }

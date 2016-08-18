@@ -21,6 +21,7 @@ public class BypassPicassoImageGetter implements Bypass.ImageGetter {
     private final Picasso mPicasso;
     private final WeakReference<TextView> mTextView;
     private int maxWidth = -1;
+    private SourceModifier mSourceModifier;
 
     public BypassPicassoImageGetter(final TextView textView, final Picasso picasso) {
         mTextView = new WeakReference<>(textView);
@@ -32,7 +33,8 @@ public class BypassPicassoImageGetter implements Bypass.ImageGetter {
 
         final BitmapDrawablePlaceHolder result = new BitmapDrawablePlaceHolder();
 
-        final String finalSource = source;
+        final String finalSource = mSourceModifier == null ? source : mSourceModifier.modify(source);
+
         new AsyncTask<Void, Void, Bitmap>() {
 
             @Override
@@ -78,6 +80,26 @@ public class BypassPicassoImageGetter implements Bypass.ImageGetter {
         }.execute((Void) null);
 
         return result;
+    }
+
+    /**
+     * Set the {@link SourceModifier}
+     * @param sourceModifier the new source modifier
+     */
+    public void setSourceModifier(SourceModifier sourceModifier) {
+        mSourceModifier = sourceModifier;
+    }
+
+    /**
+     * Allows hooking into the source so that you can do things like modify relative urls
+     */
+    public interface SourceModifier {
+        /**
+         * Modify the source url, adding to it in any way you need to
+         * @param source the source url from the markdown
+         * @return the modified url which will be loaded by Picasso
+         */
+        String modify(String source);
     }
 
     private static class BitmapDrawablePlaceHolder extends BitmapDrawable {
