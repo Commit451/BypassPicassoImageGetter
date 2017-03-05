@@ -117,5 +117,8 @@ public class BypassPicassoImageGetter implements Bypass.ImageGetter {
             this.drawable = drawable;
         }
 
+        public Drawable getDrawable() {
+            return drawable;
+        }
     }
 }
